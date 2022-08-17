@@ -1,0 +1,126 @@
+.lists {
+  margin-left: 50px;
+  margin-top: 100px;
+
+  &_deleteSvg {
+    width: 18px;
+    height: 18px;
+    display: none;
+  }
+
+  &_text {
+    display: flex;
+    align-items: center;
+  }
+  ul {
+    list-style-position: inside;
+    -moz-column-count: 2; /* Firefox */
+    -webkit-column-count: 2; /* Safari and Chrome */
+    column-count: 2;
+    list-style-type: decimal-leading-zero;
+   
+    li {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 449px;
+      background: #38404B;
+      box-shadow: -5px 5px 10px rgba(48, 54, 64, 0.2), 
+                  5px -5px 10px rgba(48, 54, 64, 0.2), 
+                  -5px -5px 10px rgba(64, 74, 86, 0.9), 
+                  5px 5px 13px rgba(48, 54, 64, 0.9), 
+                  inset 1px 1px 2px rgba(64, 74, 86, 0.3), 
+                  inset -1px -1px 2px rgba(48, 54, 64, 0.5);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 50px;
+      font-weight: 900;
+      font-size: 18px;
+      line-height: 21px;
+      color: #94ADCF;
+      img {
+        cursor: pointer;
+        margin-left: 10px;
+        margin-right: 25px;
+      }
+
+      &:hover {
+        .lists {
+          &_deleteSvg {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+  &--done {
+    margin-top: 50px;
+    ul {
+      margin-top: 50px;
+      li {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        color: #94ADCF;
+        text-decoration: line-through;
+      }
+    }
+  }
+}
+
+.label {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: -6px;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  border: 2.5px solid #94ADCF;
+  background-color: transparent;
+  border-radius: 50%;
+}
+.checkmark {
+  &--bg {
+    background-color: #94ADCF;
+  }
+}
+
+// .label input:checked ~ .checkmark {
+//   background-color: #94ADCF;
+// }
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.label input:checked ~ .checkmark:after {
+  display: block;
+}
+
+// .label .checkmark:after {
+//   top: 9px;
+//   left: 9px;
+//   width: 8px;
+//   height: 8px;
+//   border-radius: 50%;
+// }
+
