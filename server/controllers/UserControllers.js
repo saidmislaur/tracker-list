@@ -1,101 +1,109 @@
-// import jwt from 'jsonwebtoken'
-// import bcrypt from "bcrypt";
-// import UserModel from '../models/User.js'
+import jwt from 'jsonwebtoken'
+import bcrypt from "bcrypt";
+import UserModel from '../models/User.js'
+import { validationResult } from "express-validator";
 
 
-// export const register = async (req, res) => {
-//   try {
-//     const password = req.body.password
-//     const salt = await bcrypt.genSalt(10)
-//     const hash = await bcrypt.hash(password, salt)
+export const register = async (req, res) => {
+  try {
+    const errors = validationResult(req)
+    if(!errors.isEmpty()) {
+      return res.status(400).json(errors.array())
+    }
 
-//     const doc = new UserModel({
-//       email: req.body.email,
-//       passwordHash: hash,
-//       fullName: req.body.fullName,
-//       avatarUrl: req.body.avatarUrl,
-//     })
+    const password = req.body.password;
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
 
-//     const user = await doc.save()
+    const doc = new UserModel({
+      email: req.body.email,
+      fullName: req.body.fullName,
+      passwordHash: hash, 
+    });
 
-//     const token = jwt.sign({
-//       _id: user._id,
-//     }, 
-//       'secret',
-//       {
-//         expiresIn: '30d'
-//       })
+    const user = await doc.save();
 
-//     const {passwordHash, ...userData} = user._doc;
+    const token = jwt.sign({
+        _id: user._id
+      },
+      'secret123', 
+      {
+        expiresIn: '30d'
+      }
+    )
 
-//     res.json({
-//       ...userData,
-//       token,
-//     })
+    const {passwordHash, userData} = user._doc;
 
-//   } catch (error) {
-//       console.log(error)
-//       res.status(500).json({
-//         message: 'не удалось зарегестрироваться'
-//       })
-//   }
-// }
+    res.json({
+      ...userData,
+      token
+    })
 
-// export const login = async (req, res) => {
-//   try {
-//     const user = await UserModel.findOne({email: req.body.email})
+  res.json({
+    message: 'пользователь создан'
+  })
+  } catch (error) {
+    console.log(error)
+  }
+}
 
-//     if(!user) {
-//       return req.status(404).json({
-//         message: 'неверный логин',
-//       })
-//     }
+export const login = async (req, res) => {
+  try {
+    const user = await UserModel.findOne({ email: req.body.email })
 
-//     const isValidPass = await bcrypt.compare(req.body.password, user._doc.passwordHash)
+    if(!user) {
+      return req.status(404).json({
+        message: 'ошибка входа'
+      });
+    }
 
-//     if(!isValidPass) {
-//       return req.status(404).json({
-//         message: 'неверный логин или пароль'
-//       })
-//     }
+    const isValidPass = await bcrypt.compare(req.body.password, user._doc.passwordHash);
 
-//     const token = jwt.sign({
-//       _id: user._id,
-//       }, 
-//       'secret',
-//       {
-//         expiresIn: '30d'
-//       }
-//     )
+    if(!isValidPass) {
+      return res.status(404).json({
+        message: 'неверный логин или пароль'
+      })
+    }
 
-//     const {passwordHash, ...userData} = user._doc;
+    const token = jwt.sign({
+        _id: user._id
+      },
+      'secret123', 
+      {
+        expiresIn: '30d'
+      }
+    )
 
-//     res.json({
-//       ...userData,
-//       token,
-//     })
+    const {passwordHash, userData} = user._doc;
 
-//   } catch (error) {
-//     console.log(error)
-//       res.status(500).json({
-//         message: 'не удалось авторизоваться'
-//       })
-//   }
-// }
+    res.json({
+      ...userData,
+      token
+    })
 
-// export const getMe = async (req, res)=> {
-//   try {
-//     const userOne = await UserModel.findOnById(req.userId)
 
-//     if(!userOne)  {
-//       return res.status(404).json({
-//         message: 'пользователь не найден'
-//       })
-//     } 
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: 'не удалось авторизоваться'
+    })
+  }
+}
 
-//     const {passwordHash, ...userData} = user._doc;
+export const getMe = async (req, res)=> {
+  try {
+    const user = await UserModel.findById(req.userId)
+    if(!user) {
+      res.status(404).json({
+        message: 'пользователь не найден'
+      })
+    }
+    const {passwordHash, ...userData} = user._doc;
 
-//     res.json(userData)
-//   } catch (error) {
-//   }
-// }
+    res.json(userData);
+  } catch (error) {
+    res.status(500).json({
+      message: 'нет доступа'
+    })
+  }
+}
