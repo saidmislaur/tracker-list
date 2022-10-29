@@ -27,7 +27,7 @@ function Main() {
           <Header tasks={tasks} setTasks={setTasks}/>
           <div className="content">
             <Lists remove={(i) => remove(i)} task={tasks} setTasks={setTasks}/>
-            <DoneList task={tasks} setTasks={setTasks}/>
+            <DoneList remove={(i) => remove(i)} task={tasks} setTasks={setTasks}/>
           </div>
       </div>
   );

@@ -12,18 +12,21 @@ const Header = ({tasks, setTasks}) => {
 
   const onKeyPressHandler = e => {
     try {
+      if(e.key === 'Enter' && value === '') {
+        return alert('введите текст')
+      }
+
       if (e.key === 'Enter') {
         axios.post(
-          'http://localhost:5555/tasks', 
+          'http://localhost:5555/tasks',
           task
         )
         setTasks([...tasks, task])
         setValue('')
-      } 
+      }
     } catch (error) {
       alert('введите текст')
       console.log(error)
-      alert('no')
     }
     
   };
