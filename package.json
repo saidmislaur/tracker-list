@@ -40,7 +40,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start:dev": "nodemon server/index.js",
-    "deploy": "npm deploy/server.js && npm start:dev"
+    "deploy": "npm run deploy/server.js && npm run start:dev"
   },
   "eslintConfig": {
     "extends": [
