@@ -8,7 +8,7 @@ const DoneList = ({task, setTasks, remove}) => {
   const checkboxRef = React.useRef();
   
   const Check = (id) => {
-    axios.patch(`http://localhost:5555/tasks/${id}`, {checked: false})
+    axios.patch(`https://saidtracker-backend.herokuapp.com/tasks/${id}`, {checked: false})
     setChecked(false)
     setTasks(prev => prev.map(task => (task._id === id ? { ...task, checked: false } : task)))
   }

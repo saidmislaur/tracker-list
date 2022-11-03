@@ -18,7 +18,7 @@ const Header = ({tasks, setTasks}) => {
 
       if (e.key === 'Enter') {
         axios.post(
-          'http://localhost:5555/tasks',
+          'https://saidtracker-backend.herokuapp.com/tasks',
           task
         )
         setTasks([...tasks, task])

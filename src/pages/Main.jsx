@@ -9,7 +9,7 @@ function Main() {
   const [tasks, setTasks] = React.useState([])
 
   useEffect(() => {
-    axios.get('http://localhost:5555/tasks')
+    axios.get('https://saidtracker-backend.herokuapp.com/tasks')
     .then(res => {
         setTasks(res.data)
     })
@@ -17,7 +17,7 @@ function Main() {
 
 
   const remove = async (id) => {
-    await axios.delete(`http://localhost:5555/tasks/${id}`)
+    await axios.delete(`https://saidtracker-backend.herokuapp.com/tasks/${id}`)
     setTasks((prev) => prev.filter((item) => item._id !== id))
   }
 

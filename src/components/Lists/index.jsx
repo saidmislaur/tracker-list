@@ -10,7 +10,7 @@ const Lists = ({task, setTasks, remove}) => {
   const tasks = task.filter(arr => arr.checked !== true)
 
   const Check = (id) => {
-    axios.patch(`http://localhost:5555/tasks/${id}`, {checked: true})
+    axios.patch(`https://saidtracker-backend.herokuapp.com/tasks/${id}`, {checked: true})
     // setChecked(false)
     setTasks(prev => prev.map(task => (task._id === id ? { ...task, checked: true } : task)))
   }
